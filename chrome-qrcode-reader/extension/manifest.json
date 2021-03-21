@@ -1,0 +1,31 @@
+{
+  "name": "QR Code Reader",
+  "description": "A chrome extension for reading QR code from webpage.",
+  "version": "1.0.0",
+  "browser_action": {
+    "default_popup": "dist/scanner.html"
+  },
+  "background": {
+    "scripts": [
+      "dist/background.js"
+    ]
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "<all_urls>",
+    "contextMenus"
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{2694ed88-83dd-c445-bd97-cb860fc66b7e}",
+      "strict_min_version": "77.0"
+    }
+  },
+  "manifest_version": 2
+}
