@@ -5,10 +5,11 @@
   "browser_action": {
     "default_popup": "dist/scanner.html"
   },
-  "background": {
-    "scripts": [
-      "dist/background.js"
-    ]
+  "options_ui": {
+    "page": "dist/settings.html",
+    "chrome_style": true,
+    "browser_style": true,
+    "open_in_tab": true
   },
   "icons": {
     "16": "icon.png",
@@ -19,7 +20,7 @@
     "tabs",
     "activeTab",
     "<all_urls>",
-    "contextMenus"
+    "storage"
   ],
   "browser_specific_settings": {
     "gecko": {

@@ -5,8 +5,8 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "watch": "parcel watch --no-hmr ./src/scanner.html ./src/background.js -d extension/dist --no-source-maps  --public-url ./",
-    "build": "npm run clean & parcel build ./src/scanner.html ./src/background.js -d extension/dist --no-source-maps  --public-url ./",
+    "watch": "parcel watch --no-hmr ./src/scanner.html ./src/settings.html -d extension/dist --no-source-maps  --public-url ./",
+    "build": "npm run clean & parcel build ./src/scanner.html ./src/settings.html -d extension/dist --no-source-maps  --public-url ./",
     "clean": "rm -rf ./extension/dist ./dist ./.cache",
     "lint": "eslint ./src"
   },

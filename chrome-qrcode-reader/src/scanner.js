@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {fcmId} from './isUrl'
 import RequestMessage from './RequestMessage'
-import {BrowserQRCodeReader} from '@zxing/browser';
+import {BrowserQRCodeReader} from '@zxing/browser'
 
 
 class Scanner extends React.Component {
@@ -65,5 +65,5 @@ class Scanner extends React.Component {
 
 ReactDOM.render(
   <Scanner/>,
-  document.getElementById('app'),
+  document.getElementById('scanner'),
 )
