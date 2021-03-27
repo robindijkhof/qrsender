@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import RequestMessage from './RequestMessage'
 import {BrowserQRCodeReader} from '@zxing/library'
 
-
 class Scanner extends React.Component {
   constructor(props) {
     super(props)
@@ -52,7 +51,8 @@ class Scanner extends React.Component {
         const request = new RequestMessage(qrContent, 'myhost.com', registrationToken)
 
         // Make request with the registrationToken and the content
-        return fetch('http://localhost:5001/qrcode-receiver/europe-west2/widgets/send', {
+        // eslint-disable-next-line no-undef
+        return fetch(process.env.SERVER_URL, {
           method: 'post',
           headers: {
             'Content-Type': 'application/json',
