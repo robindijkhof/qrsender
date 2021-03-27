@@ -39,19 +39,19 @@ class Scanner extends React.Component {
   sendPushMessage(qrContent) {
     // Get the settings from storage
     return new Promise(resolve => chrome.storage.local.get(['settings'], resolve))
-      // Throw exception if no fcmId or else return it
+      // Throw exception if no registration token or else return it
       .then(({settings}) => {
-        if(settings?.fcmId && settings.fcmId !== ''){
-          return settings.fcmId
+        if(settings?.registrationToken && settings.registrationToken !== ''){
+          return settings.registrationToken
         }else{
-          throw 'No FCM ID configured'
+          throw 'No Registration Token configured'
         }
       })
       // Make the request to the server to send the push notification
-      .then(fcmId => {
-        const request = new RequestMessage(qrContent, 'myhost.com', fcmId)
+      .then(registrationToken => {
+        const request = new RequestMessage(qrContent, 'myhost.com', registrationToken)
 
-        // Make request qith the fcmId and the content
+        // Make request with the registrationToken and the content
         return fetch('http://localhost:5001/qrcode-receiver/europe-west2/widgets/send', {
           method: 'post',
           headers: {

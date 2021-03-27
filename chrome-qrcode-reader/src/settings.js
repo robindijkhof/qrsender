@@ -8,7 +8,7 @@ class Settings extends React.Component {
 
     // Init state
     this.state = {
-      fcmId: '',
+      registrationToken: '',
       passphrase: '',
     }
 
@@ -34,7 +34,7 @@ class Settings extends React.Component {
   }
 
   render() {
-    const {fcmId} = this.state
+    const {registrationToken} = this.state
     const {passphrase} = this.state
 
     return (
@@ -42,10 +42,10 @@ class Settings extends React.Component {
         <h1>Settings</h1>
         <form>
           <div style={{display: 'grid'}}>
-            <label htmlFor="fcmId">FCM ID</label>
-            <textarea style={{marginBottom: 12, resize: 'vertical'}} name='fcmId' onChange={this.formChangeHandler} value={fcmId}/>
-            <label htmlFor="fcmId">Passphrase</label>
-            <input style={{marginBottom: 12}} type="text" name='passphrase' onChange={this.formChangeHandler} value={passphrase}/>
+            <label htmlFor="registrationToken">FCM ID</label>
+            <textarea style={{marginBottom: 12, resize: 'vertical'}} name="registrationToken" onChange={this.formChangeHandler} value={registrationToken}/>
+            <label htmlFor="passphrase">Passphrase</label>
+            <input style={{marginBottom: 12}} type="text" name="passphrase" onChange={this.formChangeHandler} value={passphrase}/>
           </div>
           <button type="button" onClick={() => this.saveForm()}>Save</button>
         </form>

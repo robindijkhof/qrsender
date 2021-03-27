@@ -7,6 +7,7 @@ import {PushMessage} from './push-message';
 import {myIsNullOrUndefined} from './utils';
 import {messaging} from 'firebase-admin/lib/messaging';
 import MessagingOptions = messaging.MessagingOptions;
+import DataMessagePayload = messaging.DataMessagePayload;
 
 if (process.env.FUNCTIONS_EMULATOR === 'true') {
   admin.initializeApp({
@@ -29,7 +30,7 @@ app.get('/hello', (req, res) => {
 app.post('/send', async (req, res) => {
   const pushRequest: PushRequest = req.body;
 
-  if (myIsNullOrUndefined(pushRequest) || myIsNullOrUndefined(pushRequest.fcmId)) {
+  if (myIsNullOrUndefined(pushRequest) || myIsNullOrUndefined(pushRequest.registrationToken)) {
     return res.sendStatus(400);
   }
 
@@ -40,7 +41,7 @@ app.post('/send', async (req, res) => {
       title: `QR-code received from ${pushRequest.host}`,
       body: 'Click here to open',
     },
-    data: pushMessage as any,
+    data: pushMessage as unknown as DataMessagePayload,
   };
 
   const messageOptions: MessagingOptions = {
@@ -50,7 +51,7 @@ app.post('/send', async (req, res) => {
 
 
   try {
-    await admin.messaging().sendToDevice(pushRequest.fcmId, message, messageOptions);
+    await admin.messaging().sendToDevice(pushRequest.registrationToken, message, messageOptions);
     return res.sendStatus(200);
   } catch (e) {
     return res.sendStatus(500);

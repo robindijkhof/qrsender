@@ -3,16 +3,16 @@ export default class RequestMessage {
 
   host
 
-  fcmId
+  registrationToken
 
   /**
    * @param content of the QR-code
    * @param host van de website waar de QR-code is gescanned
-   * @param fcmId of the user to send the notification
+   * @param registrationToken of the user to send the notification
    */
-  constructor(content, host, fcmId) {
+  constructor(content, host, registrationToken) {
     this.content = content
-    this.fcmId = fcmId
+    this.registrationToken = registrationToken
     this.host = host
   }
 }

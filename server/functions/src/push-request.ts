@@ -4,16 +4,16 @@
 export class PushRequest {
   content: string;
   host: string;
-  fcmId: string;
+  registrationToken: string;
 
   /**
-   * @param content of the QR-code
-   * @param host van de website waar de QR-code is gescanned
-   * @param fcmId of the user to send the notification
+   * @param {string} content of the QR-code
+   * @param {string} host van de website waar de QR-code is gescanned
+   * @param {string} registrationToken of the user to send the notification
    */
-  constructor(content: string, host: string, fcmId: string) {
+  constructor(content: string, host: string, registrationToken: string) {
     this.content = content;
-    this.fcmId = fcmId;
+    this.registrationToken = registrationToken;
     this.host = host;
   }
 }

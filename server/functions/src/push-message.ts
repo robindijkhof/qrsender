@@ -8,9 +8,9 @@ export class PushMessage {
 
   /**
    *
-   * @param content of the QR-code
-   * @param datetime moment van scanner
-   * @param host van de website waar de QR-code is gescanned
+   * @param {string} content of the QR-code
+   * @param {string} datetime moment van scanner
+   * @param {string} host van de website waar de QR-code is gescanned
    */
   constructor(content: string, datetime: string, host: string) {
     this.content = content;
