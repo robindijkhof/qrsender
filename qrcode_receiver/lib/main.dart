@@ -27,18 +27,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
 }
 
-
-
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
   // Set the background messaging handler early on, as a named top-level function
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler); // Not sure what to do in the background
-
-
-
 
   /// Update the iOS foreground notification presentation options to allow
   /// heads up notifications.
@@ -50,7 +44,6 @@ Future<void> main() async {
 
   runApp(MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -99,7 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   TextEditingController _controller;
 
-
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -109,14 +101,57 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+
+    urlLaunch('test');
   }
 
-  void urlLaunch(String content){
+  void urlLaunch(String content) async {
     String url = Uri.encodeFull('irma://qr/json/$content');
-    launch(url).then((value){
-      print(value);
-      Navigator.of(context).pop();
+
+    launch(url).then((success) {
+      if(!success){
+        final snackBar =
+        SnackBar(content: Text('IRMA could not be opened. Is it installed?'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+      print(success);
     });
+
+  }
+
+  void initMessaging() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission();
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        PushMessage pushMessage = PushMessage.fromJson(message.data);
+        urlLaunch(pushMessage.content);
+
+        // if (message.notification != null) {
+        //   print('Message also contained a notification: ${message.notification}');
+        // }
+
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => OpenIrmaPage(pushMessage: pushMessage)),
+        // );
+      });
+
+      // Also handle any interaction when the app is in the background via a
+      // Stream listener
+      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+        PushMessage pushMessage = PushMessage.fromJson(message.data);
+
+        urlLaunch(pushMessage.content);
+
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => OpenIrmaPage(pushMessage: pushMessage)),
+        // );
+      });
+    }
   }
 
   @override
@@ -124,41 +159,14 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _controller = new TextEditingController(text: 'Token');
 
+    initMessaging();
+
     FirebaseMessaging.instance.getToken().then((value) => {
-      setState(() {
-        _controller.text = value;
-      })
-    });
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      PushMessage pushMessage = PushMessage.fromJson(message.data);
-      urlLaunch(pushMessage.content);
-
-      // if (message.notification != null) {
-      //   print('Message also contained a notification: ${message.notification}');
-      // }
-
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => OpenIrmaPage(pushMessage: pushMessage)),
-      // );
-    });
-
-    // Also handle any interaction when the app is in the background via a
-    // Stream listener
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      PushMessage pushMessage = PushMessage.fromJson(message.data);
-
-      urlLaunch(pushMessage.content);
-
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => OpenIrmaPage(pushMessage: pushMessage)),
-      // );
-    });
+          setState(() {
+            _controller.text = value;
+          })
+        });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +209,9 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            TextField(controller: _controller,),
+            TextField(
+              controller: _controller,
+            ),
           ],
         ),
       ),
@@ -213,7 +223,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-
-
-

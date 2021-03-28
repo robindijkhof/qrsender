@@ -1,4 +1,4 @@
-package robin.qrcodereceiver.qrcode_receiver
+package robin.qrcodereceiver
 
 import io.flutter.embedding.android.FlutterActivity
 

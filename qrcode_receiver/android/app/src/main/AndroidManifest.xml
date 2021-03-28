@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="robin.qrcodereceiver.qrcode_receiver">
+    package="robin.qrcodereceiver">
    <application
         android:label="qrcode_receiver"
         android:icon="@mipmap/ic_launcher">
