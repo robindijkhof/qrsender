@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import RequestMessage from './RequestMessage'
-import {BrowserQRCodeReader} from '@zxing/library'
+import {BrowserQRCodeReader} from '@zxing/browser'
 
 class Scanner extends React.Component {
   constructor(props) {
@@ -17,8 +17,8 @@ class Scanner extends React.Component {
 
   onCaptureVisibleTab(dataUrl) {
     const codeReader = new BrowserQRCodeReader()
-    // codeReader.decodeFromImage(undefined, dataUrl)
-      Promise.resolve({text: 'qrcodewaarde'})
+    codeReader.decodeFromImageUrl(dataUrl)
+      // Promise.resolve({text: 'qrcodewaarde'})
       .catch(() => Promise.reject('No QR code found or there are multiple QR codes!'))
       .then((result) => {
         this.setState({text: 'QR-code found. Sending message to phone...'})
@@ -35,6 +35,19 @@ class Scanner extends React.Component {
       })
   }
 
+  getCurrentHost(){
+    return new Promise((resolve => {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const tab = tabs[0]
+        const url = new URL(tab.url)
+        const host = url.hostname
+        resolve(host)
+      })
+    }))
+
+
+  }
+
   sendPushMessage(qrContent) {
     // Get the settings from storage
     return new Promise(resolve => chrome.storage.local.get(['settings'], resolve))
@@ -46,9 +59,13 @@ class Scanner extends React.Component {
           throw 'No Registration Token configured'
         }
       })
+      // Also get the current host
+      .then(token => this.getCurrentHost().then(host => Promise.resolve([token, host])))
       // Make the request to the server to send the push notification
-      .then(registrationToken => {
-        const request = new RequestMessage(qrContent, 'myhost.com', registrationToken)
+      .then(data => {
+        const registrationToken = data[0]
+        const host = data[1]
+        const request = new RequestMessage(qrContent, host, registrationToken)
 
         // Make request with the registrationToken and the content
         // eslint-disable-next-line no-undef
@@ -64,6 +81,7 @@ class Scanner extends React.Component {
             if (response.status >= 400 && response.status < 600) {
               return Promise.reject('Error send to phone')
             }
+            // From now on we don't care what the response is, as long as it isn't an error.
             return ''
           })
           // Handle other request errors

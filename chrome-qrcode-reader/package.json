@@ -5,12 +5,13 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "watch": "NODE_ENV=dev parcel watch --no-hmr ./src/scanner.html ./src/settings.html -d extension/dist --no-source-maps  --public-url ./",
+    "watch": "NODE_ENV=prod parcel watch --no-hmr ./src/scanner.html ./src/settings.html -d extension/dist --no-source-maps  --public-url ./",
     "build": "npm run clean & NODE_ENV=prod parcel build ./src/scanner.html ./src/settings.html -d extension/dist --no-source-maps  --public-url ./",
     "clean": "rm -rf ./extension/dist ./dist ./.cache",
     "lint": "eslint ./src"
   },
   "dependencies": {
+    "@zxing/browser": "^0.0.8",
     "@zxing/library": "^0.18.4",
     "react": "^16.7.0-alpha.0",
     "react-dom": "^16.7.0-alpha.0"
