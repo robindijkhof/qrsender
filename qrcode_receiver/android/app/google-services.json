@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "411431974280",
+    "project_id": "qrcode-receiver",
+    "storage_bucket": "qrcode-receiver.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411431974280:android:d48de4e6730c3aeddd363d",
+        "android_client_info": {
+          "package_name": "robin.qrcodereceiver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "411431974280-fak3i35qotl3prekpb566ee8b8gectk9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "robin.qrcodereceiver",
+            "certificate_hash": "1f97021c38de9cd5848b08334d4d5058c4fcc609"
+          }
+        },
+        {
+          "client_id": "411431974280-kalgm7mqdi96369oi4cts57q7t2fj27i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDytlLcU4b7_NreWHtPLW5r-dSJfWJSPrE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "411431974280-kalgm7mqdi96369oi4cts57q7t2fj27i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
