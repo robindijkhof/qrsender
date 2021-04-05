@@ -10,7 +10,7 @@ class Scanner extends React.Component {
       text: 'Scanning for QR-code...',
     }
 
-    chrome.tabs.captureVisibleTab(undefined, {format: 'jpeg'}, url => this.onCaptureVisibleTab(url))
+    // chrome.tabs.captureVisibleTab(undefined, {format: 'jpeg'}, url => this.onCaptureVisibleTab(url))
 
     // chrome.storage.local.get(['settings'], (result) => this.setState({test: JSON.stringify(result.settings)}))
   }

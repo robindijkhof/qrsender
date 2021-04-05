@@ -25,6 +25,7 @@ export default function isUrl(string) {
     return false
   }
 
+
   const match = string.match(protocolAndDomainRE)
   if (!match) {
     return false

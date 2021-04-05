@@ -6,15 +6,18 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:qrcode_receiver/encryption_utils.dart';
 import 'package:qrcode_receiver/model/push_message.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cryptography/cryptography.dart';
 
-import 'open_irma_page.dart';
+
 
 /// Define a top-level named handler which background/terminated messages will
 /// call.
@@ -92,7 +95,29 @@ class _MyHomePageState extends State<MyHomePage> {
 
   TextEditingController _controller;
 
-  void _incrementCounter() {
+    Future<SecretKey> getKey() async{
+      final pbkdf2 = Pbkdf2(
+        macAlgorithm: Hmac.sha256(),
+        iterations: 100000,
+        bits: 256,
+      );
+
+      // Password we want to hash
+      final secretKey = SecretKey(utf8.encode('key'));
+
+      // A random salt
+      final salt = [0, 72, 16, 170, 232, 145, 179, 47, 241, 92, 75, 146, 25, 0, 193, 176];
+
+      // Calculate a hash that can be stored in the database
+      final newSecretKey = await pbkdf2.deriveKey(
+        secretKey: secretKey,
+        nonce: salt,
+      );
+
+      return Future<SecretKey>.value(newSecretKey);
+    }
+
+  void _incrementCounter() async{
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -102,7 +127,50 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
 
-    urlLaunch('test');
+
+
+
+
+
+    // final algorithm = AesGcm.with256bits();
+    //
+    // // final encrypted = base64Decode('1MdEsqwqh4bUTlfpIk12SeziA9Pw');
+    // // Uint8List ciphertext  = encrypted.sublist(0, encrypted.length - 16);
+    // // Uint8List mac = encrypted.sublist(encrypted.length - 16);
+    // // Uint8List iv = base64Decode('xgBc/QD1jE/s1/8A'); // should als be concatenated, e.g. iv | ciphertext | tag
+    // // SecretBox secretBox = new SecretBox(ciphertext, nonce: iv, mac: new Mac(mac));
+    //
+    // // 16 salt, 12 nonce/vi, N content, 16 mac/tag
+    // final encrypted = base64Decode('AEgQquiRsy/xXEuSGQDBsA==xgBc/QD1jE/s1/8A1MdEsqwqh4bUTlfpIk12SeziA9Pw');
+    // // final secretBox = SecretBox.fromConcatenation(encrypted, nonceLength: 12, macLength: 16); does not work due to a bug
+    //
+    // Uint8List ciphertext  = encrypted.sublist(28, encrypted.length - 16);
+    // Uint8List mac = encrypted.sublist(encrypted.length - 16);
+    // Uint8List iv = encrypted.sublist(16, 28);
+    // Uint8List salt = encrypted.sublist(0, 16);
+    // SecretBox secretBox = new SecretBox(ciphertext, nonce: iv, mac: new Mac(mac));
+    //
+    // // // Encrypt
+    // final data = await algorithm.decrypt(
+    //   secretBox,
+    //   secretKey: await getKey(),
+    // );
+    //
+    //
+    // String res = utf8.decode(data);
+    String tt = await decrypt('dummy', 'key');
+
+    String asd = 'test';
+    // print('Nonce: ${secretBox.nonce}')
+    // print('Ciphertext: ${secretBox.cipherText}')
+    // print('MAC: ${secretBox.mac.bytes}')
+    //
+    // // Decrypt
+    // final clearText = await algorithm.encrypt(
+    //   secretBox,
+    //   secretKey: secretKey,
+    // );
+    // print('Cleartext: $clearText');
   }
 
   void urlLaunch(String content) async {

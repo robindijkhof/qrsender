@@ -44,7 +44,7 @@ class Settings extends React.Component {
           <div style={{display: 'grid'}}>
             <label htmlFor="registrationToken">FCM ID</label>
             <textarea style={{marginBottom: 12, resize: 'vertical'}} name="registrationToken" onChange={this.formChangeHandler} value={registrationToken}/>
-            <label htmlFor="passphrase">Passphrase</label>
+            <label htmlFor="passphrase">Encryption key</label>
             <input style={{marginBottom: 12}} type="text" name="passphrase" onChange={this.formChangeHandler} value={passphrase}/>
           </div>
           <button type="button" onClick={() => this.saveForm()}>Save</button>
