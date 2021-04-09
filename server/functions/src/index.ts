@@ -34,7 +34,8 @@ app.post('/send', async (req, res) => {
     return res.sendStatus(400);
   }
 
-  const pushMessage = new PushMessage(pushRequest.content, new Date().toISOString(), pushRequest.host);
+  const pushMessage = new PushMessage(pushRequest.content, new Date().toISOString(), pushRequest.host,
+      pushRequest.data);
 
   const message = {
     notification: {
@@ -51,7 +52,8 @@ app.post('/send', async (req, res) => {
 
 
   try {
-    await admin.messaging().sendToDevice(pushRequest.registrationToken, message, messageOptions);
+    const response = await admin.messaging().sendToDevice(pushRequest.registrationToken, message, messageOptions);
+    console.log(response);
     return res.sendStatus(200);
   } catch (e) {
     return res.sendStatus(500);

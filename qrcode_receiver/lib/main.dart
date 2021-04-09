@@ -193,8 +193,10 @@ class _MyHomePageState extends State<MyHomePage> {
     NotificationSettings settings = await messaging.requestPermission();
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
         PushMessage pushMessage = PushMessage.fromJson(message.data);
+
+        String decrypted = await decrypt(pushMessage.data, 'asdasd');
         urlLaunch(pushMessage.content);
 
         // if (message.notification != null) {

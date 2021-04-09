@@ -4,6 +4,7 @@ import {BrowserQRCodeReader} from '@zxing/browser';
 import {RequestMessage} from '../models/request-message';
 import {Result} from "@zxing/library";
 import {Settings} from "../models/settings";
+import encrypt from "../utils/encryption-utils";
 
 interface ScannerProps {
   text: string;
@@ -15,6 +16,10 @@ export class Popup extends React.Component<unknown, ScannerProps> {
     this.state = {
       text: 'Scanning for QR-code...',
     };
+
+    console.log();
+    console.log(process.env);
+
 
     this.startScan();
     // chrome.tabs.captureVisibleTab(undefined, {format: 'jpeg'}, url => this.onCaptureVisibleTab(url))
@@ -49,13 +54,19 @@ export class Popup extends React.Component<unknown, ScannerProps> {
   }
 
   async createRequestMessage(qrContent: string): Promise<RequestMessage>{
-    const settings = (await browser.storage.local.get(['settings'])) as Settings;
+    const settings = (await browser.storage.local.get(['settings'])).settings as Settings;
+    if(!settings || !settings.passphrase || settings.passphrase === ''){
+      throw new Error('No Passphrase configured');
+    }
     if(!settings || !settings.registrationToken || settings.registrationToken === ''){
       throw new Error('No Registration Token configured');
     }
 
     const host = await this.getCurrentHost();
     const requestMessage = new RequestMessage(qrContent, host, settings.registrationToken); //  TODO: encrypt ook
+    const encryptedData = await encrypt(qrContent, settings.passphrase);
+    requestMessage.data = encryptedData;
+
     return requestMessage;
   }
 
@@ -74,7 +85,7 @@ export class Popup extends React.Component<unknown, ScannerProps> {
     let response;
     try{
       response = await fetch(
-          'https://europe-west2-qrcode-receiver.cloudfunctions.net/widgets/send',
+          process.env.SERVER_URL!.toString(),
           {
             method: 'post',
             headers: {
@@ -82,7 +93,8 @@ export class Popup extends React.Component<unknown, ScannerProps> {
             },
             body: JSON.stringify(requestMessage),
           });
-    }catch {
+    }catch (e){
+      console.log(e)
       throw new Error('Error sending message to phone')
     }
     if (response.status >= 400 && response.status < 600) {
