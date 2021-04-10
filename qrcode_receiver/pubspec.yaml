@@ -31,8 +31,17 @@ dependencies:
   # used to open IRMA
   url_launcher: ^6.0.2
 
-# used to decrypt
+  # store de encryption key
+  flutter_secure_storage: ^4.1.0
+
+  # used to decrypt
   cryptography: ^2.0.1
+
+  # used to send registration token over mail
+  flutter_email_sender: ^5.0.0
+
+  # used to protect the settings page
+  local_auth: ^1.1.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
