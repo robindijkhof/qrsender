@@ -1,8 +1,9 @@
 import {browser} from 'webextension-polyfill-ts';
 import React from 'react';
 import {BrowserQRCodeReader} from '@zxing/browser';
-import {RequestMessage} from '../models/request-message';
+// import {BrowserQRCodeReader, Result} from "@zxing/library";
 import {Result} from "@zxing/library";
+import {RequestMessage} from '../models/request-message';
 import {Settings} from "../models/settings";
 import encrypt from "../utils/encryption-utils";
 
@@ -17,15 +18,7 @@ export class Popup extends React.Component<unknown, ScannerProps> {
       text: 'Scanning for QR-code...',
     };
 
-    console.log();
-    console.log(process.env);
-
-
     this.startScan();
-    // chrome.tabs.captureVisibleTab(undefined, {format: 'jpeg'}, url => this.onCaptureVisibleTab(url))
-
-
-    // chrome.storage.local.get(['settings'], (result) => this.setState({test: JSON.stringify(result.settings)}))
   }
 
   async startScan(): Promise<void> {
@@ -42,11 +35,14 @@ export class Popup extends React.Component<unknown, ScannerProps> {
 
   async getQrData(): Promise<string> {
     const screenshotUrl = await browser.tabs.captureVisibleTab(undefined, {format: 'jpeg'});
+    console.log(screenshotUrl);
     const codeReader = new BrowserQRCodeReader();
     let scannerResult: Result;
     try {
       scannerResult = await codeReader.decodeFromImageUrl(screenshotUrl);
-    } catch {
+      // scannerResult = await codeReader.decodeFromImage(undefined, screenshotUrl);
+    } catch (e){
+      console.log(e);
       throw new Error('No QR code found or there are multiple QR codes!');
     }
     this.setState({text: 'QR-code found. Sending message to phone...'});
@@ -63,11 +59,8 @@ export class Popup extends React.Component<unknown, ScannerProps> {
     }
 
     const host = await this.getCurrentHost();
-    const requestMessage = new RequestMessage(qrContent, host, settings.registrationToken); //  TODO: encrypt ook
     const encryptedData = await encrypt(qrContent, settings.passphrase);
-    requestMessage.data = encryptedData;
-
-    return requestMessage;
+    return new RequestMessage(encryptedData, host, settings.registrationToken);
   }
 
   async getCurrentHost(): Promise<string> {

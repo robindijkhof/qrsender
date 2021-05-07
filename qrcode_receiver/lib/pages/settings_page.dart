@@ -1,7 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
+// import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:qrcode_receiver/utils.dart';
 
@@ -72,7 +73,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future<String> _getEncryptionKey() async {
     final storage = new FlutterSecureStorage();
-    return await storage.read(key: 'encryptionkey');
+    String key = await storage.read(key: 'encryptionkey');
+    if(key == null){
+      key = '';
+    }
+    return Future.value(key);
   }
 
   Future<void> _setEncryptionKey(String key) async {
@@ -82,11 +87,20 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void _sendRegistrationToken() async {
     String token = await FirebaseMessaging.instance.getToken();
-    final Email email = Email(
-      subject: 'QR-Sender',
+
+    final MailOptions mailOptions = MailOptions(
       body: 'Your device registration token: \n\n' + token,
+      subject: 'QR-Sender',
+      isHTML: false,
     );
-    await FlutterEmailSender.send(email);
+
+    final MailerResponse response = await FlutterMailer.send(mailOptions);
+    //
+    // final Email email = Email(
+    //   subject: 'QR-Sender',
+    //   body: 'Your device registration token: \n\n' + token,
+    // );
+    // await FlutterEmailSender.send(email);
   }
 
   Widget _getSettingsBody() {

@@ -5,7 +5,6 @@ export class PushMessage {
   content: string;
   datetime: string;
   host: string;
-  data: string;
 
   /**
    *
@@ -14,10 +13,9 @@ export class PushMessage {
    * @param {string} host van de website waar de QR-code is gescanned
    * @param {string} data encrypted data
    */
-  constructor(content: string, datetime: string, host: string, data: string) {
+  constructor(content: string, datetime: string, host: string) {
     this.content = content;
     this.datetime = datetime;
     this.host = host;
-    this.data = data;
   }
 }

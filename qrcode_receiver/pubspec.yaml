@@ -28,6 +28,9 @@ dependencies:
   firebase_core: ^1.0.1
   firebase_messaging: ^9.0.0
 
+  # used to show a notification on android when the app is in the foreground
+  flutter_local_notifications: ^5.0.0+4
+
   # used to open IRMA
   url_launcher: ^6.0.2
 
@@ -38,10 +41,13 @@ dependencies:
   cryptography: ^2.0.1
 
   # used to send registration token over mail
-  flutter_email_sender: ^5.0.0
+  #  flutter_email_sender: ^5.0.0
+  flutter_mailer: ^1.0.1
 
   # used to protect the settings page
   local_auth: ^1.1.4
+
+  rxdart: ^0.27.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

@@ -1,13 +1,9 @@
-import {MessageData} from './message-data';
-
 export class RequestMessage {
   content: string;
 
   host: string;
 
   registrationToken: string;
-
-  data: string;
 
   /**
    * @param content of the QR-code
@@ -20,7 +16,4 @@ export class RequestMessage {
     this.host = host;
   }
 
-  getMessageData(): MessageData {
-    return new MessageData(this.content, this.host);
-  }
 }

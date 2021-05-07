@@ -34,8 +34,7 @@ app.post('/send', async (req, res) => {
     return res.sendStatus(400);
   }
 
-  const pushMessage = new PushMessage(pushRequest.content, new Date().toISOString(), pushRequest.host,
-      pushRequest.data);
+  const pushMessage = new PushMessage(pushRequest.content, new Date().toISOString(), pushRequest.host);
 
   const message = {
     notification: {
@@ -48,6 +47,7 @@ app.post('/send', async (req, res) => {
   const messageOptions: MessagingOptions = {
     contentAvailable: true, // Wake up apple devices
     timeToLive: 30,
+    collapseKey: 'QR-code received',
   };
 
 

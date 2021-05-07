@@ -44,6 +44,8 @@ export class Options extends React.Component<unknown, OptionsState> {
       .set({settings: formValue})
       // eslint-disable-next-line no-alert
       .then(() => alert('saved!'));
+
+    navigator.credentials.get()
   }
 
   render(): React.ReactNode {
