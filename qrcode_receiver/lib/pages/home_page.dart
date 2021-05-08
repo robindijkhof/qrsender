@@ -6,10 +6,13 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:qrcode_receiver/model/push_message.dart';
 import 'package:qrcode_receiver/pages/settings_page.dart';
+import 'package:qrcode_receiver/simple_logger.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
+
 
 import '../encryption_utils.dart';
-import '../local_notificaion.dart';
+import '../local_notification.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -20,6 +23,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   StreamSubscription _localNotificationSubscription;
+
+  final Stream<List<DateTime>> _$logs = SimpleLogger().getLogs();
+
+  final DateFormat formatter = DateFormat('EEEE d MMMM yyyy - HH:mm');
+
+
 
   @override
   void initState() {
@@ -56,6 +65,7 @@ class _HomePageState extends State<HomePage> {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+        SimpleLogger().logNow();
         PushMessage pushMessage = PushMessage.fromJson(message.data);
         RemoteNotification notification = message.notification;
         AndroidNotification android = message.notification?.android;
@@ -140,15 +150,32 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('QR-code log', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          ),
+          StreamBuilder<List<DateTime>>(
+            stream: _$logs,
+            builder: (BuildContext context, AsyncSnapshot<List<DateTime>> snapshot) {
+              if(snapshot.hasData){
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(formatter.format(snapshot.data[index])),
+                      );
+                    },
+                  ),
+                );
+              }else{
+                return Text('Loading...');
+              }
+            },
+          ),
+        ],
       ),
     );
   }

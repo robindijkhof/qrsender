@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:qrcode_receiver/pages/home_page.dart';
 
-import 'local_notificaion.dart';
+import 'local_notification.dart';
+import 'simple_logger.dart';
 
 
 
@@ -18,6 +19,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
+  SimpleLogger().logNow();
   print('Handling a background message ${message.messageId}');
 }
 
@@ -28,7 +30,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   // Set the background messaging handler early on, as a named top-level function
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler); // Not sure what to do in the background
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   const AndroidInitializationSettings initializationSettingsAndroid =
   AndroidInitializationSettings('ic_launcher');

@@ -47,6 +47,9 @@ dependencies:
   # used to protect the settings page
   local_auth: ^1.1.4
 
+  # used to get a path for simple logging
+  path_provider: ^2.0.1
+
   rxdart: ^0.27.0
 
   # The following adds the Cupertino Icons font to your application.
