@@ -34,8 +34,20 @@ Future<void> main() async {
 
   const AndroidInitializationSettings initializationSettingsAndroid =
   AndroidInitializationSettings('ic_launcher');
+
+  /// Note: permissions aren't requested here just to demonstrate that can be
+  /// done later
+  final IOSInitializationSettings initializationSettingsIOS =
+      IOSInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: false,
+      onDidReceiveLocalNotification:
+      (int id, String title, String body, String payload) async {
+        selectNotificationSubject.add(payload);
+      });
   final InitializationSettings initializationSettingsss = InitializationSettings(
-      android: initializationSettingsAndroid);
+      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
   await flutterLocalNotificationsPlugin.initialize(initializationSettingsss,
       onSelectNotification: (String payload) async {
     if (payload != null) {
