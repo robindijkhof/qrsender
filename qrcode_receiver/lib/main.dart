@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -42,12 +43,14 @@ Future<void> main() async {
       requestSoundPermission: false,
       onDidReceiveLocalNotification:
       (int id, String title, String body, String payload) async {
+        log('noti click');
         selectNotificationSubject.add(payload);
       });
   final InitializationSettings initializationSettingsss = InitializationSettings(
       android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
   await flutterLocalNotificationsPlugin.initialize(initializationSettingsss,
       onSelectNotification: (String payload) async {
+        log('noti click: ${DateTime.now().millisecondsSinceEpoch}');
     if (payload != null) {
       debugPrint('notification payload: $payload');
     }

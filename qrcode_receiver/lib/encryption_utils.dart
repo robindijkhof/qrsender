@@ -3,15 +3,20 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:cryptography/cryptography.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+Future<String> decryptSingleArgument(List<String> cipherAndKey) async {
+  return await decrypt(cipherAndKey[0], cipherAndKey[1]);
+}
 
 /// decrypts the provided encrypted string. The provider string should contain the salt, iv/nonce, actual content and the mac/tag.
 /// This provides string should be base64 encoded, encrypted with AES265GCM which uses pbkdf2 SHA-256 with 100000 cycles
 /// 16 bytes salt, 12 bytes nonce/vi, N bytes content, 16 bytes mac/tag
 ///
-Future<String> decrypt(String cipherText, String passphrase) async{
+Future<String> decrypt(String cipherText, String passphrase) async {
+
+
   final encrypted = base64Decode(cipherText);
-  // final encrypted = base64Decode('AEgQquiRsy/xXEuSGQDBsMYAXP0A9YxP7Nf/ANTHRLKsKoeG1E5X6SJNdkns4gPT8A==');
-  // final encrypted = base64Decode('AEgQquiRsy/xXEuSGQDBsA==xgBc/QD1jE/s1/8A1MdEsqwqh4bUTlfpIk12SeziA9Pw');
   // final secretBox = SecretBox.fromConcatenation(encrypted, nonceLength: 12, macLength: 16); does not work due to a bug
 
   Uint8List ciphertext  = encrypted.sublist(28, encrypted.length - 16);
@@ -48,4 +53,9 @@ Future<SecretKey> _getKey(Uint8List salt, String passphrase) async{
   );
 
   return newSecretKey;
+}
+
+Future<String> _getEncryptionKey() async {
+  final storage = new FlutterSecureStorage();
+  return await storage.read(key: 'encryptionkey');
 }

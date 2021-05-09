@@ -1,12 +1,16 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:qrcode_receiver/model/push_message.dart';
 import 'package:qrcode_receiver/pages/settings_page.dart';
 import 'package:qrcode_receiver/simple_logger.dart';
+import 'package:qrcode_receiver/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 
@@ -47,11 +51,28 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _urlLaunch(String content) async {
-    String url = Uri.encodeFull('irma://qr/json/$content');
+    log('launch start: ${DateTime.now().millisecondsSinceEpoch}');
+
+    bool validURL = Uri.parse(content).hasAbsolutePath;
+
+    String url;
+    String error;
+    if(validURL){
+      url = content;
+      error = 'QR-code could not be opened by an app.';
+    }else{
+      url = Uri.encodeFull('irma://qr/json/$content');
+      error = 'IRMA could not be opened. Is it installed?';
+    }
+
+    log('launch middel: ${DateTime.now().millisecondsSinceEpoch}');
+
 
     launch(url).then((success) {
+      log('launch end: ${DateTime.now().millisecondsSinceEpoch}');
+
       if (!success) {
-        final snackBar = SnackBar(content: Text('IRMA could not be opened. Is it installed?'));
+        final snackBar = SnackBar(content: Text(error));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
       print(success);
@@ -65,6 +86,7 @@ class _HomePageState extends State<HomePage> {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+        log('on message');
         SimpleLogger().logNow();
         PushMessage pushMessage = PushMessage.fromJson(message.data);
         RemoteNotification notification = message.notification;
@@ -109,6 +131,7 @@ class _HomePageState extends State<HomePage> {
 
   void _initLocalNotification() {
     this._localNotificationSubscription = selectNotificationSubject.listen((String payload) async {
+      log('noti subscription: ${DateTime.now().millisecondsSinceEpoch}');
       _decryptAndOpen(payload);
     });
   }
@@ -119,14 +142,24 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _decryptAndOpen(String encryptedContent) async {
+    log('decrypt and open start: ${DateTime.now().millisecondsSinceEpoch}');
     String decrypted;
 
+    showLoaderDialog(context);
+    // await Future.delayed(Duration(milliseconds: 1000)); // Without the dialog is not presented.
+
     try {
-      decrypted = await decrypt(encryptedContent, await _getEncryptionKey());
+      decrypted = await compute(decryptSingleArgument, [encryptedContent, await _getEncryptionKey()]);
+      // decrypted = await decrypt(encryptedContent, await _getEncryptionKey());
     } catch (ex) {
       final snackBar = SnackBar(content: Text('Could not open QR-code, check if encryption keys match.'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } finally{
+      Navigator.pop(context);
     }
+
+    log('decrypt and open middel: ${DateTime.now().millisecondsSinceEpoch}');
+
 
     if (decrypted != null) {
       _urlLaunch(decrypted);
@@ -152,6 +185,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
+          FlatButton(onPressed: () {test();}, child: Text('test')),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text('QR-code log', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -179,4 +213,9 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  test(){
+    showLoaderDialog(context);
+  }
+
 }
