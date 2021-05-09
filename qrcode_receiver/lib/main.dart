@@ -35,8 +35,6 @@ Future<void> main() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
   AndroidInitializationSettings('ic_launcher');
 
-  /// Note: permissions aren't requested here just to demonstrate that can be
-  /// done later
   final IOSInitializationSettings initializationSettingsIOS =
       IOSInitializationSettings(
       requestAlertPermission: true,

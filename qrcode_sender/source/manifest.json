@@ -14,7 +14,7 @@
   "permissions": [
     "tabs",
     "activeTab",
-    "https://*",
+    "<all_urls>",
     "storage"
   ],
 

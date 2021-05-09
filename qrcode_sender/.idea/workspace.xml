@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3b512128-1a19-4873-83b9-4bb01c5f9225" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../qrcode_receiver/lib/simple_logger.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../qrcode_receiver/lib/local_notificaion.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../qrcode_receiver/lib/local_notification.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../qrcode_receiver/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../qrcode_receiver/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../qrcode_receiver/lib/pages/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../qrcode_receiver/lib/pages/home_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../qrcode_receiver/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../qrcode_receiver/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../qrcode_receiver/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../qrcode_receiver/pubspec.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/Popup/Popup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/source/Popup/Popup.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/source/manifest.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,6 +86,17 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="build:firefox" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build:firefox" />
+      </scripts>
+      <node-interpreter value="project" />
+      <package-manager value="/usr/local/lib/node_modules/npm" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <configuration name="dev:chrome" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -113,6 +121,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.build:firefox" />
         <item itemvalue="npm.dev:chrome" />
         <item itemvalue="npm.build:chrome" />
         <item itemvalue="npm.dev:firefox" />
@@ -131,7 +140,7 @@
       <workItem from="1617726440717" duration="17397000" />
       <workItem from="1617982814430" duration="596000" />
       <workItem from="1618142713318" duration="2070000" />
-      <workItem from="1620392462833" duration="3801000" />
+      <workItem from="1620392462833" duration="4726000" />
     </task>
     <servers />
   </component>

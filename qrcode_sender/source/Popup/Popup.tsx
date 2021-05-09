@@ -52,7 +52,7 @@ export class Popup extends React.Component<unknown, ScannerProps> {
   async createRequestMessage(qrContent: string): Promise<RequestMessage>{
     const settings = (await browser.storage.local.get(['settings'])).settings as Settings;
     if(!settings || !settings.passphrase || settings.passphrase === ''){
-      throw new Error('No Passphrase configured');
+      throw new Error('No encryption key configured');
     }
     if(!settings || !settings.registrationToken || settings.registrationToken === ''){
       throw new Error('No Registration Token configured');
