@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3b512128-1a19-4873-83b9-4bb01c5f9225" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../qrcode_receiver/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../qrcode_receiver/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../qrcode_receiver/lib/pages/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../qrcode_receiver/lib/pages/home_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../qrcode_receiver/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../qrcode_receiver/pubspec.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/popup.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/popup.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,9 +120,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.build:firefox" />
         <item itemvalue="npm.dev:chrome" />
         <item itemvalue="npm.build:chrome" />
+        <item itemvalue="npm.build:firefox" />
         <item itemvalue="npm.dev:firefox" />
         <item itemvalue="npm.build" />
       </list>
@@ -141,6 +140,7 @@
       <workItem from="1617982814430" duration="596000" />
       <workItem from="1618142713318" duration="2070000" />
       <workItem from="1620392462833" duration="4923000" />
+      <workItem from="1620914909793" duration="265000" />
     </task>
     <servers />
   </component>
@@ -157,6 +157,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

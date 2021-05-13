@@ -51,32 +51,32 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _urlLaunch(String content) async {
-    log('launch start: ${DateTime.now().millisecondsSinceEpoch}');
-
-    bool validURL = Uri.parse(content).hasAbsolutePath;
+    bool validURL = Uri.tryParse(content)?.hasAbsolutePath ?? false;
 
     String url;
     String error;
     if(validURL){
       url = content;
       error = 'QR-code could not be opened by an app.';
-    }else{
+    }else if (RegExp('{ *"u" *: *".*" *, *"irmaqr" *:.*}').hasMatch(content)){
       url = Uri.encodeFull('irma://qr/json/$content');
       error = 'IRMA could not be opened. Is it installed?';
+    } else{
+      final snackBar = SnackBar(content: Text('Unknown QR-code'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
 
-    log('launch middel: ${DateTime.now().millisecondsSinceEpoch}');
 
+    if(url != null){
+      launch(url).then((success) {
+        if (!success) {
+          final snackBar = SnackBar(content: Text(error));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+        print(success);
+      });
+    }
 
-    launch(url).then((success) {
-      log('launch end: ${DateTime.now().millisecondsSinceEpoch}');
-
-      if (!success) {
-        final snackBar = SnackBar(content: Text(error));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-      print(success);
-    });
   }
 
   void _initMessaging() async {
@@ -185,7 +185,6 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          FlatButton(onPressed: () {test();}, child: Text('test')),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text('QR-code log', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -213,9 +212,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  test(){
-    showLoaderDialog(context);
-  }
-
 }
