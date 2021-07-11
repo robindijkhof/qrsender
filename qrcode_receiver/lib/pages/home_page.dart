@@ -74,6 +74,9 @@ class _HomePageState extends State<HomePage> {
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
         print(success);
+      }).catchError((err) {
+        final snackBar = SnackBar(content: Text(error));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       });
     }
 
