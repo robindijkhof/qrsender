@@ -1,6 +1,6 @@
 # qrcode_receiver
 
-A new Flutter project.
+The receiver app.
 
 ## Getting Started
 

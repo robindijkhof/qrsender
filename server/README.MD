@@ -19,7 +19,7 @@ npm serve
 {
   'host': 'myhost.com',
   'content': 'QRCODE_CONTENT',
-  'fcmId': 'MY_DEVICE_ID'
+  'registrationToken': 'MY_DEVICE_ID'
 }
 ```
 
